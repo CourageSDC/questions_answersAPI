@@ -12,7 +12,6 @@ router.use((req, res, next) => {
 router
   .route('/:product_id')
   .get(controller.getQuestions)
-  // return 200 Ok & Data
 
 //Get all Answers
 router
