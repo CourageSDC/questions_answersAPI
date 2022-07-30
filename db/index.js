@@ -1,15 +1,16 @@
 const { Pool } = require('pg')
+require('dotenv').config();
 
 const pool = new Pool({
-  user: 'pmcbride',
-  database: '',
-  host: 'localhost',
-  password: '',
-  port:
+  user: process.env.USERNAME || '',
+  database: process.env.DBNAME,
+  host: '127.0.0.1',
+  password: process.env.PASSWORD,
+  port: 5432,
 })
 
 module.exports = {
-  getQuestions: (id, limit, offset) => {
+  getQuestions: (productId, page, count) => {
     let queryString = `SELECT * FROM questions LIMIT ${limit}`;
     return pool.query(queryString)
       .then(res => {console.log('query all questions', res)})

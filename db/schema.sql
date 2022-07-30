@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS answers_photos;
 -- ---
 
 CREATE TABLE questions (
-  question_id SERIAL PRIMARY KEY NOT NULL,
+  question_id SERIAL UNIQUE PRIMARY KEY,
   product_id INTEGER NOT NULL,
   body VARCHAR(1000) NOT NULL,
   date_written BIGINT,
@@ -35,7 +35,7 @@ CSV HEADER;
 -- ---
 
 CREATE TABLE answers (
-  answer_id SERIAL PRIMARY KEY NOT NULL,
+  answer_id SERIAL UNIQUE PRIMARY KEY,
   question_id INTEGER REFERENCES questions (question_id),
   body VARCHAR(1000) NOT NULL,
   date_written BIGINT,
@@ -54,7 +54,7 @@ CSV HEADER;
 -- ---
 
 CREATE TABLE answers_photos (
-  photo_id SERIAL PRIMARY KEY NOT NULL,
+  photo_id SERIAL UNIQUE PRIMARY KEY,
   answer_id INTEGER REFERENCES answers (answer_id),
   url VARCHAR
 );
