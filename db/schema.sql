@@ -26,7 +26,7 @@ CREATE TABLE questions (
 );
 
 COPY questions
-FROM '../data/questions.csv'
+FROM '/Users/pmcbride/Documents/HackReactor_rfp2205/SDC/questions.csv'
 DELIMITER ','
 CSV HEADER;
 
@@ -49,7 +49,7 @@ CREATE TABLE answers (
 );
 
 COPY answers
-FROM '../data/answers.csv'
+FROM '/Users/pmcbride/Documents/HackReactor_rfp2205/SDC/answers.csv'
 DELIMITER ','
 CSV HEADER;
 
@@ -65,7 +65,7 @@ CREATE TABLE answers_photos (
 );
 
 COPY answers_photos
-FROM '../data/answers_photos.csv'
+FROM '/Users/pmcbride/Documents/HackReactor_rfp2205/SDC/answers_photos.csv'
 DELIMITER ','
 CSV HEADER;
 
