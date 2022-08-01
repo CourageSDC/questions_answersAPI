@@ -113,12 +113,13 @@ module.exports = {
       asker_name,
       asker_email
     )
-    VALUES (${product_id}, ${body}, ${+new Date()}, ${name}, ${email})
+    VALUES (${product_id}, '${body}', ${+new Date()}, '${name}', '${email}')
     `;
     return pool
       .query(postQuestionQuery)
       .then((res) => {
-        console.log("Question has been posted.");
+        console.log("Question has been posted.", res);
+        return res;
       })
       .catch((err) => console.log("error posting a question", err));
   },
@@ -130,17 +131,27 @@ module.exports = {
       body,
       date_written,
       answerer_name,
-      answerer_email,
-      (INSERT INTO answers_photos (
-        url
-      )
-      VALUES (${photos}))
+      answerer_email
     )
-    VALUES (${questionId}, ${body}, ${+new Date()}, ${answerer_name}, ${answerer_email})`;
+    VALUES (${questionId}, '${body}', ${+new Date()}, '${name}', '${email}')`;
+
+    const postAnswerPhotosQuery = (photo) =>
+    `INSERT INTO answers_photos(
+      answer_id,
+      url)
+      VALUES ('${photo}')`;
+
     return pool
       .query(postAnswerQuery)
+      .then(() => {
+        return Promise.all(
+          photos.map((photo) => postAnswerPhotosQuery(photo))
+        )
+      })
       .then((res) => {
         console.log("answer posted");
+        console.log(res);
+        return res;
       })
       .catch((err) => console.log("error posting a answer", err));
   },
@@ -153,6 +164,7 @@ module.exports = {
       .query(QHelpQuery)
       .then((res) => {
         console.log("Helpfulness updated");
+        return res;
       })
       .catch((err) => console.log("error updating helpfulness count", err));
   },
@@ -165,6 +177,7 @@ module.exports = {
       .query(QReportQuery)
       .then((res) => {
         console.log("Question reported");
+        return res;
       })
       .catch((err) => console.log("error reporting question", err));
   },
@@ -177,6 +190,7 @@ module.exports = {
       .query(AHelpQuery)
       .then((res) => {
         console.log("Helpfulness updated");
+        return res;
       })
       .catch((err) => console.log("error updating helpfulness count", err));
   },
@@ -189,6 +203,7 @@ module.exports = {
       .query(AReportQuery)
       .then((res) => {
         console.log("Answer Reported");
+        return res;
       })
       .catch((err) => console.log("error reporting answer", err));
   },
