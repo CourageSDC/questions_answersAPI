@@ -80,7 +80,7 @@ ALTER TABLE answers_photos RENAME COLUMN id TO photo_id;
 -- CREATE INDEX photos ON answers_photos(answer_id);
 
 -- ---
--- Run these comands on duplicate key value violates unique constraint "questions_pkey"
+-- Run these comands if error adding questions or answers : duplicate key value violates unique constraint "questions_pkey"
 -- SELECT setval('questions_id_seq', (SELECT MAX(question_id) FROM questions)+1);
 -- SELECT setval('answers_id_seq', (SELECT MAX(answer_id) FROM answers)+1);
 -- SELECT setval('answers_photos_id_seq', (SELECT MAX(photo_id) FROM answers_photos)+1);

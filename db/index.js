@@ -11,51 +11,41 @@ const pool = new Pool({
 
 module.exports = {
   getQuestions: (productId, limit, offset) => {
-    let queryString = `WITH questions_answers AS (
-      SELECT
-          questions.question_id,
-          questions.question_body,
-          questions.product_id,
-          questions.date_written,
-          questions.asker_name,
-          questions.helpful,
-          questions.reported,
-          (SELECT (
-            json_object_agg
-            (
-              answers.answer_id, json_build_object
+    let queryString =
+      `SELECT ${productId} AS product_id,
+      json_agg(
+        json_build_object(
+          'question_id', questions.question_id,
+          'question_body', questions.question_body,
+          'question_date', questions.date_written,
+          'asker_name', questions.asker_name,
+          'question_helpfulness', questions.helpful,
+          'reported', questions.reported,
+          'answers', (SELECT coalesce((
+              json_object_agg
               (
-                'id', answers.answer_id,
-                'body', answers.body,
-                'date', answers.date_written,
-                'answerer_name', answers.answerer_name,
-                'helpfulness', answers.helpful,
-                'photos', (SELECT coalesce(json_agg(answers_photos.url), '[]')
-                FROM answers_photos WHERE answers_photos.answer_id = answers.answer_id
+                answers.answer_id, json_build_object
+                (
+                  'id', answers.answer_id,
+                  'body', answers.body,
+                  'date', answers.date_written,
+                  'answerer_name', answers.answerer_name,
+                  'helpfulness', answers.helpful,
+                  'photos', (SELECT coalesce(json_agg(answers_photos.url), '[]')
+                  FROM answers_photos WHERE answers_photos.answer_id = answers.answer_id
+                  )
                 )
               )
-            )
+            ), '{}')
+            FROM answers WHERE answers.question_id = questions.question_id
           )
-          FROM answers WHERE answers.question_id = questions.question_id
-          ) AS answers
-          FROM questions
-          WHERE questions.product_id = ${productId}
-          AND questions.reported IS FALSE
-          OFFSET ${offset}
-          LIMIT ${limit}
-      ) SELECT product_id, json_agg(
-        json_build_object(
-          'question_id', question_id,
-          'question_body', question_body,
-          'question_date', date_written,
-          'asker_name', asker_name,
-          'question_helpfulness', helpful,
-          'reported', reported,
-          'answers', answers
         )
       ) AS results
-      FROM questions_answers
-      GROUP BY 1`;
+      FROM questions
+      WHERE questions.product_id = ${productId}
+      AND questions.reported IS FALSE
+      OFFSET ${offset}
+      LIMIT ${limit}`;
 
     return pool
       .query(queryString)
@@ -150,7 +140,6 @@ module.exports = {
       })
       .then((res) => {
         console.log("answer posted");
-        console.log(res);
         return res;
       })
       .catch((err) => console.log("error posting a answer", err));
