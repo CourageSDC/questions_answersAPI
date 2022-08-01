@@ -1,10 +1,10 @@
 
 -- CREATE DATABASE questions_and_answers;
 -- CREATE SCHEMA questions_and_answers;
-DROP DATABASE IF EXISTS questions;
+DROP DATABASE IF EXISTS questions_answers;
 
-CREATE DATABASE "questions";
-\c questions;
+CREATE DATABASE "questions_answers";
+\c questions_answers;
 
 DROP TABLE IF EXISTS questions CASCADE;
 DROP TABLE IF EXISTS answers CASCADE;
