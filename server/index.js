@@ -9,7 +9,7 @@ app.use(express.json());
 // app.get('/test', (req, res) => {
 //   res.send('does this work');
 // })
-app.use('/qa/questions', questionsRouter);
+app.use('/qa', questionsRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
