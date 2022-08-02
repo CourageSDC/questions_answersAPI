@@ -17,7 +17,7 @@ module.exports = {
         json_build_object(
           'question_id', questions.question_id,
           'question_body', questions.question_body,
-          'question_date', questions.date_written,
+          'question_date', (SELECT TO_CHAR(to_timestamp(questions.date_written / 1000), 'YYYY-MM-DD"T"HH24:MI:SS:MS"Z"')),
           'asker_name', questions.asker_name,
           'question_helpfulness', questions.helpful,
           'reported', questions.reported,
@@ -28,7 +28,7 @@ module.exports = {
                 (
                   'id', answers.answer_id,
                   'body', answers.body,
-                  'date', answers.date_written,
+                  'date', (SELECT TO_CHAR(to_timestamp(answers.date_written / 1000), 'YYYY-MM-DD"T"HH24:MI:SS:MS"Z"')),
                   'answerer_name', answers.answerer_name,
                   'helpfulness', answers.helpful,
                   'photos', (SELECT coalesce(json_agg(answers_photos.url), '[]')
@@ -66,7 +66,7 @@ module.exports = {
           json_build_object(
             'answer_id', answers.answer_id,
             'body', answers.body,
-            'date', answers.date_written,
+            'date', (SELECT TO_CHAR(to_timestamp(answers.date_written / 1000), 'YYYY-MM-DD"T"HH24:MI:SS:MS"Z"')),
             'answerer_name', answers.answerer_name,
             'helpfulness', answers.helpful,
             'photos', (SELECT coalesce(json_agg(
