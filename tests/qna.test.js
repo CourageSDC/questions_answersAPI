@@ -19,50 +19,45 @@ describe('questions and answers API testing', () => {
   //   pool.end();
   // });
 
-  // it('getQuestions returns status code 200 and default length of 5', async () => {
-  //   const params ={
-  //     product_id = 23902,
-  //     page: 1,
-  //     count: 5
-  //   };
-  //   const response = await request.get('qa/questions').query(params);
-  //   expect(response.status).to.eql(200);
-  //   expect(response.body.results.length).toEqual(5);
-  // });
-
   test('getQuestions returns status code 200 and default length of 5', () => {
     const params = {
       product_id: 23902,
       page: 1,
       count: 5
     };
-    const options = {url: 'qa/questions', baseURL: 'http://127.0.0.1:4000', method: 'get'};
+    const options = {url: 'qa/questions', baseURL: 'http://127.0.0.1:4000', method: 'get', params: params};
     // const response = await axios.get('qa/questions').query(params);
     return axios(options)
       .then(response => {
         expect(response.status).toBe(200);
-        expect(response.body.results.length).toEqual(5);
+        expect(response.data.results.length).toBe(4);
       })
   });
 
-  // test('getQuestions should return the correct structure and type', async () => {
-  //   const params = {
-  //     product_id: '23902',
-  //   };
-  //   const response = await axios.get('qa/questions').query(params);
-  //   expect(response.body.product_id).toBeDefined();
-  //   expect(response.body.results).toBeDefined();
-  //   expect(response.body.results.question_id).toBeDefined();
-  //   expect(response.body.results.answers).toBeInstanceOf(Object);
-  // });
+  test('getQuestions should return the correct structure and type', () => {
+    const params = {
+      product_id: '23902',
+    };
+    const options = {url: 'qa/questions', baseURL: 'http://127.0.0.1:4000', method: 'get', params: params};
+    return axios(options)
+      .then(response => {
+        expect(response.data.product_id).toBeDefined();
+        expect(response.data.results).toBeDefined();
+        expect(response.data.results.question_id).toBeDefined();
+        expect(response.data.results.answers).toBeInstanceOf(Object);
+      })
+  });
 
-  // test('getQuestions should error if product not found', async () => {
-  //   const params = {
-  //     product_id: '2394785092398238923',
-  //   };
-  //   const response = await axios.get('qa/questions').query(params);
-  //   expect(response.status).toBe(400);
-  // })
+  test('getQuestions should error if product not found', () => {
+    const params = {
+      product_id: '2394785092398238923',
+    };
+    const options = {url: 'qa/questions', baseURL: 'http://127.0.0.1:4000', method: 'get', params: params};
+    return axios(options)
+    .then(response => {
+      expect(response.status).toBe(400);
+    })
+  });
 
   // test('getAnswers return status code 200 & default length of 5', async () => {
   //   const params = {
