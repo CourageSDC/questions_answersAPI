@@ -9,7 +9,13 @@ module.exports = {
     let limit = count || 5;
     let offset = (page - 1) * limit || 0;
     db.getQuestions(productId, limit, offset)
-      .then(data => res.status(200).send(data))
+      .then(data => {
+        if (data.results === null) {
+          res.sendStatus(404);
+        } else {
+          res.status(200).send(data)
+        }
+      })
       .catch(err => res.sendStatus(400))
   },
 

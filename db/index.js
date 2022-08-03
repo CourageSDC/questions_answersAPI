@@ -108,7 +108,7 @@ module.exports = {
     return pool
       .query(postQuestionQuery)
       .then((res) => {
-        console.log("Question has been posted.", res);
+        console.log("Question has been posted.");
         return res;
       })
       .catch((err) => console.log("error posting a question", err));

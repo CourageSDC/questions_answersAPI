@@ -54,6 +54,7 @@ DELIMITER ','
 CSV HEADER;
 
 ALTER TABLE answers RENAME COLUMN id TO answer_id;
+
 -- ---
 -- Table 'photos'
 -- ---
@@ -73,29 +74,23 @@ ALTER TABLE answers_photos RENAME COLUMN id TO photo_id;
 
 
 
--- CREATE INDEXES HERE
+-- CREATE INDEXES HERE --
+
+-- CREATE INDEX productId_questions ON questions(product_id);
+
+-- CREATE INDEX questionId_answers ON answers(question_id);
+
+-- CREATE INDEX noreport_questions ON questions(reported) WHERE reported = false;
 
 -- CREATE INDEX noreport_answers ON answers(reported) WHERE reported = false;
 
 -- CREATE INDEX photos ON answers_photos(answer_id);
 
+
 -- ---
 -- Run these comands if error adding questions or answers : duplicate key value violates unique constraint "questions_pkey"
+--
+
 -- SELECT setval('questions_id_seq', (SELECT MAX(question_id) FROM questions)+1);
 -- SELECT setval('answers_id_seq', (SELECT MAX(answer_id) FROM answers)+1);
 -- SELECT setval('answers_photos_id_seq', (SELECT MAX(photo_id) FROM answers_photos)+1);
--- ---
-
-
--- ---
--- Test Data
--- ---
-
--- INSERT INTO `Questions` (`product_id`,`question_id (foreign key)`) VALUES
--- ('','');
--- INSERT INTO `QuestionData` (`question_id`,`question_body`,`question_date`,`asker_name`,`question_helpfulness`,`reported`,`question_email`,`answer_id(foreign key)`) VALUES
--- ('','','','','','','','');
--- INSERT INTO `AnswerData` (`answer_id`,`body`,`date`,`answerer_name`,`helpfulness`,`answer_email`,`photo_id(foreign key)`,`photos`) VALUES
--- ('','','','','','','','');
--- INSERT INTO `Photos` (`photo_id`,`url`) VALUES
--- ('','');
