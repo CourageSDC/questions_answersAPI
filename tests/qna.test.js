@@ -26,7 +26,6 @@ describe('questions and answers API testing', () => {
       count: 5
     };
     const options = {url: 'qa/questions', baseURL: 'http://127.0.0.1:4000', method: 'get', params: params};
-    // const response = await axios.get('qa/questions').query(params);
     return axios(options)
       .then(response => {
         expect(response.status).toBe(200);
