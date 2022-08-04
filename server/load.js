@@ -9,28 +9,12 @@ export const options = {
       executor: 'constant-arrival-rate',
       rate: '1000',
       timeUnit: '1s',
-      //note: 1000 iterations per second
       duration: '60s',
       preAllocatedVUs: 20,
       maxVUs: 200
     },
   },
 };
-
-// export let options = {
-//   insecureSkipTLSVerify: true,
-//   noConnectionReuse: false,
-//   scenarios: {
-//     constant_request_rate: {
-//       executor: 'constant-arrival-rate',
-//       rate: '1000',
-//       timeUnit: '1s',
-//       duration: '60s',
-//       preAllocatedVUs: 1000,
-//       maxVUs: 1000
-//     },
-//   }
-// };
 
 export default function () {
   let product_id = Math.floor(Math.random() * 100000 + 900000) + 1;
