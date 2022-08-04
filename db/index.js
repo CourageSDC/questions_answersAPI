@@ -17,7 +17,7 @@ module.exports = {
         json_build_object(
           'question_id', questions.question_id,
           'question_body', questions.question_body,
-          'question_date', (SELECT TO_CHAR(to_timestamp(questions.date_written / 1000), 'YYYY-MM-DD"T"HH24:MI:SS:MS"Z"')),
+          'question_date', questions.date_written,
           'asker_name', questions.asker_name,
           'question_helpfulness', questions.helpful,
           'reported', questions.reported,
@@ -28,7 +28,7 @@ module.exports = {
                 (
                   'id', answers.answer_id,
                   'body', answers.body,
-                  'date', (SELECT TO_CHAR(to_timestamp(answers.date_written / 1000), 'YYYY-MM-DD"T"HH24:MI:SS:MS"Z"')),
+                  'date', answers.date_wrt,
                   'answerer_name', answers.answerer_name,
                   'helpfulness', answers.helpful,
                   'photos', (SELECT coalesce(json_agg(answers_photos.url), '[]')
@@ -103,7 +103,7 @@ module.exports = {
       asker_name,
       asker_email
     )
-    VALUES (${product_id}, '${body}', ${+new Date()}, '${name}', '${email}')
+    VALUES (${product_id}, '${body}', CURRENT_TIMESTAMP, '${name}', '${email}')
     `;
     return pool
       .query(postQuestionQuery)
@@ -123,7 +123,7 @@ module.exports = {
       answerer_name,
       answerer_email
     )
-    VALUES (${questionId}, '${body}', ${+new Date()}, '${name}', '${email}')`;
+    VALUES (${questionId}, '${body}', CURRENT_TIMESTAMP, '${name}', '${email}')`;
 
     const postAnswerPhotosQuery = (photo) =>
     `INSERT INTO answers_photos(

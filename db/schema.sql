@@ -32,6 +32,10 @@ CSV HEADER;
 
 ALTER TABLE questions RENAME COLUMN body TO question_body;
 ALTER TABLE questions RENAME COLUMN id TO question_id;
+ALTER TABLE questions ALTER COLUMN date_written SET DATA TYPE timestamptz USING timestamptz 'epoch' + date_written * interval '1 millisecond';
+
+CREATE INDEX productId_questions ON questions(product_id);
+CREATE INDEX noreport_questions ON questions(reported) WHERE reported = false;
 
 -- ---
 -- Table 'answers'
@@ -54,6 +58,10 @@ DELIMITER ','
 CSV HEADER;
 
 ALTER TABLE answers RENAME COLUMN id TO answer_id;
+ALTER TABLE answers ALTER COLUMN date_written SET DATA TYPE timestamptz USING timestamptz 'epoch' + date_written * interval '1 millisecond';
+
+CREATE INDEX questionId_answers ON answers(question_id);
+CREATE INDEX noreport_answers ON answers(reported) WHERE reported = false;
 
 -- ---
 -- Table 'photos'
@@ -71,6 +79,7 @@ DELIMITER ','
 CSV HEADER;
 
 ALTER TABLE answers_photos RENAME COLUMN id TO photo_id;
+CREATE INDEX photos ON answers_photos(answer_id);
 
 
 
