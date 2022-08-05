@@ -1,21 +1,21 @@
 const { Pool } = require("pg");
 require("dotenv").config();
 
-const pool = new Pool({
-  user: 'pmcbride',
-  database: "questions_answers",
-  host: "localhost",
-  password: '',
-  port: 5432,
-});
-
 // const pool = new Pool({
-//   user: process.env.PGUSER,
-//   database: process.env.PGDATABASE,
-//   host: process.env.PGHOST,
-//   password: process.env.PGPASSWORD,
-//   port: process.env.PGPORT,
+//   user: 'pmcbride',
+//   database: "questions_answers",
+//   host: "localhost",
+//   password: '',
+//   port: 5432,
 // });
+
+const pool = new Pool({
+  user: process.env.PGUSER,
+  database: process.env.PGDATABASE,
+  host: process.env.PGHOST,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
+});
 
 module.exports = {
   getQuestions: (productId, limit, offset) => {
