@@ -1,26 +1,28 @@
 const { Pool } = require("pg");
 require("dotenv").config();
 
-// const pool = new Pool({
-//   user: process.env.USERNAME || "",
-//   database: "questions_answers",
-//   host: "localhost",
-//   password: process.env.PASSWORD,
-//   port: 5432,
-// });
-
 const pool = new Pool({
-  user: process.env.PGUSER,
-  database: process.env.PGDATABASE,
-  host: process.env.PGHOST,
-  password: process.env.PGPASSWORD,
-  port: process.env.PGPORT,
+  user: 'pmcbride',
+  database: "questions_answers",
+  host: "localhost",
+  password: '',
+  port: 5432,
 });
+
+// const pool = new Pool({
+//   user: process.env.PGUSER,
+//   database: process.env.PGDATABASE,
+//   host: process.env.PGHOST,
+//   password: process.env.PGPASSWORD,
+//   port: process.env.PGPORT,
+// });
 
 module.exports = {
   getQuestions: (productId, limit, offset) => {
     let queryString =
       `SELECT ${productId} AS product_id,
+      ${offset} AS page,
+      ${limit} AS count,
       coalesce(json_agg(
         json_build_object(
           'question_id', questions.question_id,
@@ -48,7 +50,7 @@ module.exports = {
             FROM answers WHERE answers.question_id = questions.question_id
           )
         )
-      )) AS results
+      ), '[]') AS results
       FROM questions
       WHERE questions.product_id = ${productId}
       AND questions.reported IS FALSE
