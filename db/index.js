@@ -21,7 +21,7 @@ module.exports = {
   getQuestions: (productId, limit, offset) => {
     let queryString =
       `SELECT ${productId} AS product_id,
-      json_agg(
+      coalesce(json_agg(
         json_build_object(
           'question_id', questions.question_id,
           'question_body', questions.question_body,
@@ -48,7 +48,7 @@ module.exports = {
             FROM answers WHERE answers.question_id = questions.question_id
           )
         )
-      ) AS results
+      )) AS results
       FROM questions
       WHERE questions.product_id = ${productId}
       AND questions.reported IS FALSE
