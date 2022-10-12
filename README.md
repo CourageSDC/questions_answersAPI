@@ -1,4 +1,4 @@
-# questions_answersAPI
+# Questions & Answers API
 An accelerated Back-end RESTful API framework for questions and asnswers data, to enhance user experience for the Atelier e-commerce shop.
 
 ## Accomplishments
